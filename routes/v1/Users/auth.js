@@ -20,18 +20,8 @@ router.post("/register", async (req, res) => {
   }
   try {
     const saveUser = await Forms.create({ email, name, phone, skills });
-    if (saveUser) {
-      const email_body = BaseTemplate(
-        "Welcome to Inserviz",
-        "Your account has been created successfully",
-        `Login and get access to great healthcare services.`,
-        "not-me-password-reset"
-      );
 
-      await sendMail(email, email_body);
-
-      return res.json({ status: 200, message: "User created successfully" });
-    }
+    return res.json({ status: 200, message: "User created successfully" });
   } catch (err) {
     return res.json({ status: 400, message: err });
   }
