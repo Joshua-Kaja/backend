@@ -7,10 +7,29 @@ const keys = require("../keys.json");
 const app = express();
 
 app.set("keys", keys.inserviz);
+
 require("./database/mongodb")(app.get("keys").db_name);
 
+//
+const whitelist = [
+  "https://inserviz.com",
+  "http://localhost:3000",
+  "http://localhost:3002",
+];
+
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (!origin || whitelist.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true
+};
+
 // Using CORS
-app.use(cors());
+app.use(cors(corsOptions));
 
 //send post requests
 app.use(express.json());
